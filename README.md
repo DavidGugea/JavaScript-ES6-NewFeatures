@@ -52,3 +52,62 @@ numbersOfAlumbs.set(artist3, 8);
 numbersOfAlumbs.set(artist4, 9);
 numbersOfAlumbs.set(artist5, 10);
 ```
+
+## Sets & Weaksets
+
+Sets are unique arrays that don't have any duplicate items. Example:
+
+```JavaScript
+let artists = new Set(
+    [
+        "Kyuss",
+        "Kyuss",
+        "Tool",
+        "Monster Magnet",
+        "Ben Harper",
+        "Queens of the Stone Age"
+    ]
+);
+```
+
+WeakSets are just like WeakMaps. They only allow objects as items and the objects that are not being referenced are getting picked up by the GC.
+
+Example:
+
+```JavaScript
+'use strict';
+
+let artist1 = {
+    name : "Kyuss"
+};
+
+let artist2 = {
+    name : "Tool"
+};
+
+let artist3 = {
+    name : "Monster Magnet"
+};
+
+let artist4 = {
+    name : "Ben Harper"
+};
+
+let artist5 = {
+    name : "Queens of the Stone Age"
+};
+
+let artist6 = {
+    name : "Justin Bieber"
+};
+
+let artists = new WeakSet(
+    [
+        artist1,
+        artist2,
+        artist3,
+        artist4,
+        artist5,
+    ]
+);
+```
