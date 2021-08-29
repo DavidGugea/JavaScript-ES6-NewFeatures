@@ -111,3 +111,116 @@ let artists = new WeakSet(
     ]
 );
 ```
+
+## Capsuling iteration over data-structures
+
+In order to use an iterator, you can use the ```.next()``` method that every ds has.:
+
+```JavaScript
+let list = new Array();
+for(let i = 0 ; i < 10; i++){
+    list.push(i);
+}
+
+for(let i = 0 ; i < list.length ; i++){
+    console.log(list.next());
+}
+```
+
+You can also build your own iterator by using closures:
+
+```JavaScript
+function build_iterator_of(array) {
+    let index = 0;
+    let done_value = false;
+    return {
+        next: function () {
+            if (index === array.length) {
+                // Set the done value to be true
+                done_value = true;
+                // Reset the index so that we start from the beginning once the iterator has reached the end.
+                index = 0;
+
+                return this.next();
+            } else {
+                let prev_index = index;
+                index++;
+                return ({
+                    value: array[prev_index],
+                    done: done_value
+                });
+            }
+        }
+    }
+}
+
+let array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+let iterator = build_iterator_of(array);
+
+for (let i = 0; i < array.length * 7; i++) {
+    let obj = iterator.next();
+    console.log(`VALUE -- > ${obj.value} || DONE -- > ${obj.done}`);
+}
+```
+
+In this exmaple the closure returns an object with the next function just like any other ds does.
+
+If you want to build a generator you can use the ```yield``` keyword:
+
+```JavaScript
+function* generator(){
+    counter = 0
+    while(true){
+        counter++;
+        yield counter;
+    }
+}
+
+let generator_values = generator();
+for(let value of generator_valuesenerator){
+    if(value){
+        console.log(value);
+    }else{
+        break;
+    }
+}
+```
+
+In case you want to be able to iterate over a self made generator you have to add the iteration symbol to it:
+
+```JavaScript
+artists = [
+    "artist_1",
+    "artist_2",
+    "artist_3",
+    "artist_4",
+    "artist_5",
+];
+let arrayWrapper = {
+    array : artists
+};
+
+arrayWrapper[Symbol.iterator] = function(){
+    let array = this.array;
+    let counter = this.array.length - 1;
+
+    return{ 
+        next : function(){
+            if(counter < 0){
+                return {
+                    done: true
+                };
+            }else{
+                return { 
+                    value : array[counter--],
+                    done : false
+                }
+            }
+        }
+    }
+};
+
+for(let artist of arrayWrapper){
+    console.log(artist);
+}
+```
