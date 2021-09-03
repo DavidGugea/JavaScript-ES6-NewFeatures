@@ -266,3 +266,82 @@ const gameSettingsProxy = new Proxy(gameSettings, {
     }
 });
 ```
+
+## Asynchronous Programming
+
+Functions are first class citizens in javascript meaning that they can be passed around as parameters, used in variables, returned as values from other function etc. JavaScript is by default nor synchronous neither asynchronous. Some APIs work sync other async. In the following I will explain promises and how to use them.
+
+A promise needs a function as parameter. That function needs two parameters that are also functions, resolve and reject. If you call resolve, in order to pick it up from the promise, you will have to use ```.then()```. On the other side, if you use reject, in order to pick it up from the promise, you will have to use ```.catch()```. A promise can also return another promise as a value.
+
+Here is an example of a promise:
+
+```JavaScript
+let p = new Promise(
+    (resolve, reject) => {
+        let error = false;
+
+        if(!error){
+            resolve("This parameter comes from resolve");
+        }else{
+            reject("This parameter comes from reject");
+        }
+    }
+);
+
+p
+    .then(
+        param => {
+            console.log(param);
+            console.log("Promise resolved");
+        }
+    )
+    .catch(
+        param => {
+            console.log(param);
+            console.log("Promise rejected");
+        }
+    )
+```
+
+You can also use async and await which is just syntax sugar:
+
+```JavaScript
+function doSomething(){
+    return new Promise(
+        (resolve, reject) => {
+            let error = false;
+
+            if(!error){
+                window.setTimeout(
+                    () => {
+                        resolve("Done");
+                    },
+                    2000
+                )
+            }else{
+                reject("Failed");
+            }
+        },
+    )
+}
+
+async function main(){
+    const value = await doSomething()
+        .then(
+            (result) => {
+                console.log(result);
+                return 5;
+            }
+        )
+        .catch(
+            (error) => {
+                console.log(error);
+            }
+        )
+
+    console.log(value);
+    console.log("The thing that had to be done has been executed.");
+}
+
+main();
+```
