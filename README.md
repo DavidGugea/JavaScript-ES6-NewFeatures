@@ -345,3 +345,34 @@ async function main(){
 
 main();
 ```
+
+## Tagged Template Literals
+
+Template Strings are just like formatted string in python where you can directly give values inside the string without using + to add values to them. Example:
+
+```JavaScript
+let a = 3;
+let b = 2;
+let c = a + b;
+
+let template_string = `The sum between ${a} and ${b} is ${c}`;
+```
+
+As you can see we don't have to write every value with +.
+
+You can also use a funciton and tag the template, that is called a tagged template literal. Here is a short example:
+
+```JavaScript
+function f(strings, ...replacements){
+    // Code
+}
+
+let a = 3;
+let b = 2;
+let c = a + b;
+
+let template_string = f`The sum between ${a} and ${b} is ${c}`;
+```
+
+In order to tag a template string you just have to add the name of the function in front of the template. ```strings``` represents all string that are between the templates ( everything between ```${}``` templates ). Replacements are ,in our case, a, b and c.
+
