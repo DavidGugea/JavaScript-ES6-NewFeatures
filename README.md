@@ -376,3 +376,58 @@ let template_string = f`The sum between ${a} and ${b} is ${c}`;
 
 In order to tag a template string you just have to add the name of the function in front of the template. ```strings``` represents all string that are between the templates ( everything between ```${}``` templates ). Replacements are ,in our case, a, b and c.
 
+## Symbols
+
+Symbols in JavaScript are seen as primitive data types. You can't instantiate a symbol with the keyword ```new()``` just like you would do with any other object. Symbols are primitive data types in JavaScript. 
+When you create a symbol you can give it only one single argument and that is the symbol description. Example:
+
+```JavaScript
+const symbol = Symbol("This is the description for the symbol I've just created.");
+```
+
+You can also create two symbols with the same description in this way and you will see that they are not seen as the same symbol:
+
+```JavaScript
+const symbol_1 = Symbol("This is the description for the symbol I've just created.");
+const symbol_2 = Symbol("This is the description for the symbol I've just created.");
+
+console.log(symbol_1 === symbol_2); // false
+```
+
+The reason why they are not seen the same is because they are stored in 2 different variables.
+
+In JavaScript we have the **Global Symbol Registry ( GSR )** which is a map with key-value pairs. Each key represents the symbol description of a symbol and the value is the symbol itself. A cleaner way of working with symbols is using the GSR.
+
+There are 2 special methods that can be used by the Symbol data type: for and keyFor.
+
+```Symbol.for()``` works just like ```setdefault()``` in python dicts. You must give it the symbol description as an argument. If the symbol description will be found in the GSR-keys then you will get the value back, which is the symbol that had that symbol description. Otherwise, if the symbol description hasn't been found in the GSR-keys, a new symbol will be added inside the GSR with the symbol description as its key and the symbol itself as the value. Example:
+
+```JavaScript
+const symbol = Symbol.for("symbol description");
+const another_symbol = Symbol.for("symbol description");
+
+console.log(symbol === another_symbol); // true
+```
+
+In this case, the symbols will be the same since another_symbol uses Symbol.for() with the same description as symbol, that means that Symbol.for() will return the first symbol that used that description, which in our case is ```symbol```, so ```another_symbol``` will be the exact same as ```symbol```.
+
+```Symbol.keyFor()``` is the opposite of ```Symbol.for()```. You have to give it the symbol as its value and it will search for it inside the GSR values and will return it's key, if found. The key will be, of course, the symbol description of the given symbol.
+
+We can use symbols in order to make values more private inside objects. That means that we can use symbols as special properties so we can't access them through iteration ( just like properties that have the ```enumerable``` property set to false )
+
+```JavaScript
+const symbol = Symbol.for("SYMBOL DESCRIPTION");
+
+const object = {
+    property_1 : "value_1",
+    property_2 : "value_2",
+    [symbol] : 17
+};
+
+for(let key in object){
+    console.log(`KEY -- > ${key} || VALUE -- > ${object[key]}`);
+    // [symbol] won't be shown here
+}
+
+console.log(object[symbol]); // 17
+```
