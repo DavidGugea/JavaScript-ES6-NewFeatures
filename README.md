@@ -431,3 +431,17 @@ for(let key in object){
 
 console.log(object[symbol]); // 17
 ```
+
+## Object and array destructuring
+
+In order to destructure an array you can simply write the names of the properties inside parantheses.
+
+```JavaScript
+const numbers = [
+    1, 2, 3, 4
+]
+
+let [
+    one, two, three, four
+] = numbers;
+```
