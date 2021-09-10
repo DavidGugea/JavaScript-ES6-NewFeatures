@@ -445,3 +445,152 @@ let [
     one, two, three, four
 ] = numbers;
 ```
+
+You can also choose to destruct only certain elements from the array that you need:
+
+```JavaScript
+let [
+    one,
+    ,
+    three,
+    ,
+] = numbers;
+```
+
+You can also extract elements out of multidimensional arrays ( value by value ):
+
+```JavaScript
+let coordinates = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+];
+
+let [
+    [x1, y1, z1],
+    [x2, y2, z2],
+    [x3, y3, z3],
+] = coordinates;
+
+// You can also extract assign an entire array to a value:
+
+let [
+    coords_1,
+    coords_2,
+    coords_3,
+] = coordinates;
+```
+
+If you want to destruct objects you can either rename the variables or keep the property names:
+
+```JavaScript
+let person = {
+    firstName : "Max",
+    lastName : "Mustermann"
+}
+
+let {
+    firstName : firstNameExtracted,
+    lastName : lastNameExtracted
+} = person;
+
+// KEEP THE NAMES OF THE PROPERTIES WHEN YOU EXTRACT:
+
+let {
+    firstName,
+    lastName
+} = person;
+```
+
+In case that there is a property inside your object that is an object as well, you will have to follow the pattern:
+
+```JavaScript
+let person = {
+    firstName : "Max",
+    lastName : "Mustermann",
+    address : {
+        postCode : "23456",
+        street : "Musterstraße, 22"
+    }
+}
+
+let {
+    firstName : firstNameExtracted,
+    lastName : lastNameExtracted,
+    address : {
+        postCode : postCodeExtracted,
+        street : streetExtracted
+    }
+} = person;
+```
+
+If you want to only destruct certain properties from an object you can't follow the same pattern as we did when we destructed arrays:
+
+```JavaScript
+({firstName} = person);
+```
+
+You can also use object destructuring inside loops or functions:
+
+```JavaScript
+let person= [
+    {
+        firstName : "Max",
+        lastName : "Mustermann",
+        contact : {
+            email : "max.mustermann@javascripthandbuch.de",
+            phone : "02345/23456789"
+        }
+    },
+    {
+        firstName : "Maxi",
+        lastName : "Musterfrau",
+        contact : {
+            emial : "maxi.miusterfrau@javascripthandbuch.de",
+            phone : "02345/23456789"
+        }
+    }
+];
+
+for(
+    let {
+        firstName,
+        lastName,
+        contact : {
+            email,
+            phone
+        }
+    } 
+    of person
+){
+    console.log(`${firstName} ${lastName}`);
+    console.log(`E-mail : ${email}`);
+    console.log(`Telefon : ${phone}`);
+    console.log("-------------------------------------------------------------------------");
+}
+
+// DESTRUCTURING AS FUNCTION PARAMETER
+
+function printPerson(
+    {
+        contact : {
+            email : email,
+            phone : phone
+        }
+    }
+){
+    console.log(`E-Mail : ${email}`);
+    console.log(`Telefon: ${phone}`);
+}
+
+let person = {
+    firstName : "Max",
+    lastName : "Mustermann",
+    contact : {
+        email : "max.mustermann@javascripthandbuch.de",
+        phone : "02345/23456789"
+    }
+};
+
+printPerson(person);
+```
